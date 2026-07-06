@@ -24,7 +24,12 @@
     </script>
   </head>
   <body>
-      <a-scene embedded arjs>
+      <a-scene embedded 
+      arjs="sourceType: webcam;
+            sourceWidth: 640;
+            sourceHeight: 360;
+            displayWidth: 640;
+            displayHeight: 360;">
         <a-marker preset="hiro" smooth>
             <a-entity
             position="0 0 0"
