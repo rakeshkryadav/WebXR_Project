@@ -18,10 +18,9 @@ const anchor = mindarThree.addAnchor(0);
 
 const loader = new GLTFLoader();
 
-loader.load("cube.glb",(gltf)=>{
+loader.load("model.glb",(gltf)=>{
 
     gltf.scene.scale.set(0.3,0.3,0.3);
-    gltf.scene.rotation.x = Math.PI / 2;
 
     anchor.group.add(gltf.scene);
 
