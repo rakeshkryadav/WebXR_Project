@@ -23,8 +23,9 @@ let mixer;
 
 loader.load("model.glb",(gltf)=>{
 
-    gltf.scene.scale.set(0.3,0.3,0.3);
+    gltf.scene.scale.set(0.6,0.6,0.6);
 
+    // Create Model
     anchor.group.add(gltf.scene);
 
     // Create animation mixer
@@ -35,6 +36,10 @@ loader.load("model.glb",(gltf)=>{
         mixer.clipAction(clip).play();
     });
 
+});
+
+loader.load("text.glb", (gltf) => {
+    anchor.group.add(gltf.scene);
 });
 
 await mindarThree.start();
