@@ -18,17 +18,31 @@ const anchor = mindarThree.addAnchor(0);
 
 const loader = new GLTFLoader();
 
+const clock = new THREE.Clock();
+let mixer;
+
 loader.load("model.glb",(gltf)=>{
 
     gltf.scene.scale.set(0.3,0.3,0.3);
 
     anchor.group.add(gltf.scene);
 
+    // Create animation mixer
+    mixer = new THREE.AnimationMixer(gltf.scene);
+
+    // Play all animations in the GLB
+    gltf.animations.forEach((clip) => {
+        mixer.clipAction(clip).play();
+    });
+
 });
 
 await mindarThree.start();
 
 renderer.setAnimationLoop(()=>{
+    if (mixer) {
+        mixer.update(clock.getDelta());
+    }
 
     renderer.render(scene,camera);
 
