@@ -21,9 +21,6 @@ const loader = new GLTFLoader();
 const clock = new THREE.Clock();
 let mixer;
 
-const billboard = new THREE.Group();
-anchor.group.add(billboard);
-
 loader.load("model.glb",(gltf)=>{
 
     gltf.scene.scale.set(0.6,0.6,0.6);
@@ -42,23 +39,17 @@ loader.load("model.glb",(gltf)=>{
 });
 
 loader.load("text.glb", (gltf) => {
-    // anchor.group.add(gltf.scene);
+    anchor.group.add(gltf.scene);
     gltf.scene.position.set(0.7, 0, 3);
     gltf.scene.scale.set(0.6,0.6,0.6);
-    billboard.add(gltf.scene);
 });
 
 await mindarThree.start();
-
-const cameraWorldPos = new THREE.Vector3();
 
 renderer.setAnimationLoop(()=>{
     if (mixer) {
         mixer.update(clock.getDelta());
     }
-
-    camera.getWorldPosition(cameraWorldPos);
-    billboard.lookAt(cameraWorldPos);
     
     renderer.render(scene,camera);
 
