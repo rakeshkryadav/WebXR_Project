@@ -50,12 +50,15 @@ loader.load("text.glb", (gltf) => {
 
 await mindarThree.start();
 
+const cameraWorldPos = new THREE.Vector3();
+
 renderer.setAnimationLoop(()=>{
     if (mixer) {
         mixer.update(clock.getDelta());
     }
 
-    billboard.lookAt(camera.position);
+    camera.getWorldPosition(cameraWorldPos);
+    billboard.lookAt(cameraWorldPos);
     
     renderer.render(scene,camera);
 
