@@ -43,7 +43,8 @@ loader.load("model.glb",(gltf)=>{
 
 loader.load("text.glb", (gltf) => {
     // anchor.group.add(gltf.scene);
-    gltf.scene.position.set(0, 0, 1.7);
+    gltf.scene.position.set(0.7, 0, 3);
+    gltf.scene.scale.set(0.6,0.6,0.6);
     billboard.add(gltf.scene);
 });
 
