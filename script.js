@@ -1,63 +1,76 @@
 import * as THREE from "three";
-
 import { MindARThree } from "https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-three.prod.js";
-
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 const mindarThree = new MindARThree({
     container: document.body,
-    imageTargetSrc: "card.mind"
+    imageTargetSrc: "cards.mind"
 });
 
-const {renderer, scene, camera} = mindarThree;
+const { renderer, scene, camera } = mindarThree;
 
-const light = new THREE.HemisphereLight(0xffffff,0xbbbbff,1);
-scene.add(light);
-
-const anchor = mindarThree.addAnchor(0);
+scene.add(new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1));
 
 const loader = new GLTFLoader();
-
 const clock = new THREE.Clock();
-let mixer;
 
-const billboard = new THREE.Group();
-anchor.group.add(billboard);
+const mixers = [];
+const billboards = [];
 
-loader.load("model.glb",(gltf)=>{
+// Create an anchor for each image target
+for (let i = 0; i < 3; i++) {
 
-    gltf.scene.scale.set(0.6,0.6,0.6);
-    gltf.scene.position.set(0, 0.5, 0);
+    const anchor = mindarThree.addAnchor(i);
 
-    // Create Model
-    anchor.group.add(gltf.scene);
+    const billboard = new THREE.Group();
+    anchor.group.add(billboard);
+    billboards.push(billboard);
 
-    // Create animation mixer
-    mixer = new THREE.AnimationMixer(gltf.scene);
+    // Load the model
+    loader.load("model.glb", (gltf) => {
 
-    // Play all animations in the GLB
-    gltf.animations.forEach((clip) => {
-        mixer.clipAction(clip).play();
+        gltf.scene.scale.set(0.6, 0.6, 0.6);
+        gltf.scene.position.set(0, 0.5, 0);
+
+        anchor.group.add(gltf.scene);
+
+        if (gltf.animations.length > 0) {
+            // Create an AnimationMixer
+            const mixer = new THREE.AnimationMixer(gltf.scene);
+
+            // Play all animations
+            gltf.animations.forEach((clip) => {
+                mixer.clipAction(clip).play();
+            });
+
+            mixers.push(mixer);
+        }
+
     });
 
-});
+    // Load the same text
+    loader.load("text.glb", (gltf) => {
 
-loader.load("text.glb", (gltf) => {
-    // anchor.group.add(gltf.scene);
-    gltf.scene.position.set(0, -0.5, 0);
-    gltf.scene.scale.set(0.6,0.6,0.6);
-    billboard.add(gltf.scene);
-});
+        gltf.scene.scale.set(0.6, 0.6, 0.6);
+        gltf.scene.position.set(0, -0.5, 0);
+
+        billboard.add(gltf.scene);
+
+    });
+}
 
 await mindarThree.start();
 
-renderer.setAnimationLoop(()=>{
-    if (mixer) {
-        mixer.update(clock.getDelta());
-    }
-    
-    billboard.lookAt(camera.position);
+renderer.setAnimationLoop(() => {
 
-    renderer.render(scene,camera);
+    const delta = clock.getDelta();
+
+    mixers.forEach((mixer) => mixer.update(delta));
+
+    billboards.forEach((billboard) => {
+        billboard.lookAt(camera.position);
+    });
+
+    renderer.render(scene, camera);
 
 });
