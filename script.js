@@ -7,8 +7,8 @@ const mindarThree = new MindARThree({
     imageTargetSrc: "cards.mind",
     filterMinCF: 0.0001,         // default: 0.001   (decrease the value to make it less jittery)
     filterBeta: 200,             // default: 1000    (increase the value to reduce the delay)
-    warmupTolerance: 3,          // default: 5
-    missTolerance: 8,            // default: 5
+    warmupTolerance: 0,          // default: 5
+    missTolerance: 10,           // default: 5
 });
 
 const { renderer, scene, camera } = mindarThree;
