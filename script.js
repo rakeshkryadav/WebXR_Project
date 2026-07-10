@@ -89,13 +89,13 @@ async function shareWebsite() {
     try {
 
         // Load image from project
-        const response = await fetch("../upicon.jpg");
+        const response = await fetch("upicon.jpg");
         const blob = await response.blob();
 
         // Convert Blob to File
         const file = new File(
             [blob],
-            "share.jpg",
+            "upicon.jpg",
             {
                 type: "image/jpeg"
             }
