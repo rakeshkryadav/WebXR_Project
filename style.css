@@ -8,11 +8,27 @@ body{
 .container{
     position: fixed;
     bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 9999;
+    right: 20px;
+    z-index: 99999;
+}
+#shareBtn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+
+    padding:8px 16px;
+    border:none;
+    border-radius:10px;
+
+    background:#25D366;
+    color:#fff;
+
+    font-size:16px;
+    font-weight:400;
 }
 
-#shareBtn{
-    padding: 15px 30px;
+#shareBtn img{
+    width:20px;
+    height:20px;
 }

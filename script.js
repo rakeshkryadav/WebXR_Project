@@ -65,6 +65,18 @@ for (let i = 0; i < 3; i++) {
 
 await mindarThree.start();
 
+document.addEventListener("visibilitychange", async () => {
+    if (document.hidden) {
+        try {
+            await mindarThree.stop();
+        } catch (e) {}
+    } else {
+        try {
+            await mindarThree.start();
+        } catch (e) {}
+    }
+});
+
 renderer.setAnimationLoop(() => {
 
     const delta = clock.getDelta();
@@ -86,38 +98,38 @@ shareButton.addEventListener("click", shareWebsite);
 
 async function shareWebsite() {
     console.log("Share button clicked");
+
     try {
+        // Stop AR camera before opening the share sheet
+        await mindarThree.stop();
 
         // Load image from project
-        const response = await fetch("upicon.jpg");
+        const response = await fetch("images/upicon.jpg");
         const blob = await response.blob();
 
         // Convert Blob to File
-        const file = new File(
-            [blob],
-            "upicon.jpg",
-            {
-                type: "image/jpeg"
-            }
-        );
+        const file = new File([blob], "upicon.jpg", {
+            type: "image/jpeg"
+        });
 
         // Check browser support
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
 
             await navigator.share({
                 files: [file],
-                text: "Check out AR Experience!\nhttps://rakeshkryadav.github.io/WebXR_Project/",
+                text: "Check out AR Experience!\nhttps://rakeshkryadav.github.io/WebXR_Project"
             });
 
         } else {
-
             alert("Your browser doesn't support file sharing.");
-
         }
 
-    }
-    catch(err){
+    } catch (err) {
         console.error(err);
+    } finally {
+        // Restart camera when the user returns
+        try {
+            await mindarThree.start();
+        } catch (e) {}
     }
-
 }
