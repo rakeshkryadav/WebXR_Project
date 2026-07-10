@@ -105,9 +105,8 @@ async function shareWebsite() {
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
 
             await navigator.share({
-                title: "My Website",
-                text: "Check out my website!\nhttps://rakeshkryadav.github.io/rakeshkr-yadav/",
-                files: [file]
+                files: [file],
+                text: "Check out AR Experience!\nhttps://rakeshkryadav.github.io/WebXR_Project/",
             });
 
         } else {
