@@ -78,3 +78,47 @@ renderer.setAnimationLoop(() => {
     renderer.render(scene, camera);
 
 });
+
+// Share Button
+const shareButton = document.getElementById("shareBtn");
+
+shareButton.addEventListener("click", shareWebsite);
+
+async function shareWebsite() {
+    console.log("Share button clicked");
+    try {
+
+        // Load image from project
+        const response = await fetch("../upicon.jpg");
+        const blob = await response.blob();
+
+        // Convert Blob to File
+        const file = new File(
+            [blob],
+            "share.jpg",
+            {
+                type: "image/jpeg"
+            }
+        );
+
+        // Check browser support
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+
+            await navigator.share({
+                title: "My Website",
+                text: "Check out my website!\nhttps://rakeshkryadav.github.io/rakeshkr-yadav/",
+                files: [file]
+            });
+
+        } else {
+
+            alert("Your browser doesn't support file sharing.");
+
+        }
+
+    }
+    catch(err){
+        console.error(err);
+    }
+
+}
