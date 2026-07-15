@@ -53,7 +53,7 @@ for (let i = 0; i < 3; i++) {
     });
 
     // Load the same text
-    loader.load("text.glb", (gltf) => {
+    loader.load("upiconText.glb", (gltf) => {
 
         gltf.scene.scale.set(0.6, 0.6, 0.6);
         gltf.scene.position.set(0, -0.5, 0);
