@@ -22,9 +22,9 @@ const mixers = [];
 const billboards = [];
 
 const textFiles = [
-    "upiconText.glb",
+    "vaaText.glb",
     "ufsText.glb",
-    "vaaText.glb"
+    "upiconText.glb"
 ];
 
 // Create an anchor for each image target
