@@ -21,6 +21,10 @@ const clock = new THREE.Clock();
 const mixers = [];
 const billboards = [];
 
+const anchor0 = mindarThree.addAnchor(0);
+const anchor1 = mindarThree.addAnchor(1);
+const anchor2 = mindarThree.addAnchor(2);
+
 // Create an anchor for each image target
 for (let i = 0; i < 3; i++) {
 
@@ -52,8 +56,26 @@ for (let i = 0; i < 3; i++) {
 
     });
 
+    let currentTarget = -1;
+
+    anchor0.onTargetFound = () => currentTarget = 0;
+    anchor1.onTargetFound = () => currentTarget = 1;
+    anchor2.onTargetFound = () => currentTarget = 2;
+
+    var targetText;
+
+    if(currentTarget === 0) {
+        targetText = "upiconText.glb";
+    }
+    else if(currentTarget === 1) {
+        targetText = "ufsText.glb";
+    }
+    else if(currentTarget === 2) {
+        targetText = "vaaText.glb";
+    }
+
     // Load the same text
-    loader.load("upiconText.glb", (gltf) => {
+    loader.load(targetText, (gltf) => {
 
         gltf.scene.scale.set(0.6, 0.6, 0.6);
         gltf.scene.position.set(0, -0.5, 0);
