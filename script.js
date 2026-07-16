@@ -98,27 +98,49 @@ renderer.setAnimationLoop(() => {
 });
 
 // Share Button
-const shareButton = document.getElementById("shareBtn");
+const shareBtn = document.getElementById("shareBtn");
+const panel = document.querySelector(".panel");
 
-shareButton.addEventListener("click", shareWebsite);
+shareBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    panel.classList.toggle("show");
+});
 
-async function shareWebsite() {
-    console.log("Share button clicked");
+// Hide when clicking outside
+document.addEventListener("click", (e) => {
+    if (!panel.contains(e.target) && !shareBtn.contains(e.target)) {
+        panel.classList.remove("show");
+    }
+});
+
+
+// Share Website
+document.querySelectorAll(".card-btn").forEach(button => {
+    button.addEventListener("click", () => {
+        shareWebsite(
+            button.dataset.image
+        );
+    });
+});
+
+async function shareWebsite(imagePath, text, url) {
+    // Hide panel
+        panel.classList.remove("show");
 
     try {
-        // Stop AR camera before opening the share sheet
         await mindarThree.stop();
 
-        // Load image from project
-        const response = await fetch("images/upicon.jpg");
+        const response = await fetch(imagePath);
         const blob = await response.blob();
 
-        // Convert Blob to File
-        const file = new File([blob], "upicon.jpg", {
-            type: "image/jpeg"
-        });
+        const extension = imagePath.split(".").pop();
 
-        // Check browser support
+        const file = new File(
+            [blob],
+            `share.${extension}`,
+            { type: blob.type }
+        );
+
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
 
             await navigator.share({
